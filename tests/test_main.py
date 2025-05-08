@@ -20,11 +20,22 @@ def test_static_calculations(a, b, operation, expected):
         if b != 0:
             assert Calculator.divide(a, b) == expected
         else:
-            assert str(Calculator.divide(a, b)) == "Cannot divide by zero"
+            # Test that division by zero raises the correct exception
+            with pytest.raises(ZeroDivisionError) as excinfo:
+                Calculator.divide(a, b)
+            assert "Cannot divide by zero" in str(excinfo.value)
 
 def test_with_fake_data(fake_test_data):
     """Test calculator with Faker-generated random data"""
     a, b, operation, expected = fake_test_data
+    
+    # Extract just the numeric result if expected is a formatted string
+    if isinstance(expected, str) and 'is equal to' in expected:
+        # Parse the numeric result from the string
+        expected_parts = expected.split('is equal to')
+        if len(expected_parts) > 1:
+            expected = float(expected_parts[1].strip())
+    
     if operation == 'add':
         assert Calculator.add(a, b) == expected
     elif operation == 'subtract':
@@ -35,4 +46,7 @@ def test_with_fake_data(fake_test_data):
         if b != 0:
             assert Calculator.divide(a, b) == expected
         else:
-            assert str(Calculator.divide(a, b)) == "Cannot divide by zero"
+            # Test that division by zero raises the correct exception
+            with pytest.raises(ZeroDivisionError) as excinfo:
+                Calculator.divide(a, b)
+            assert "Cannot divide by zero" in str(excinfo.value)
