@@ -26,6 +26,14 @@ venv/
 env/
 ENV/
 
+# Environment variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
 # IDE specific files
 .idea/
 .vscode/
